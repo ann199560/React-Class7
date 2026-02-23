@@ -7,6 +7,9 @@ import Cart from "./views/front/Cart";
 import NotFound from "./views/front/NotFound";
 import Checkout from "./views/Front/Checkout";
 import Login from "./views/Login";
+import AdminLayout from "./layout/AdminLayout";
+import AdminProducts from "./views/admin/AdminProducts";
+import AdminOrders from "./views/admin/AdminOrders";
 
 // 建立路由表（裡面放陣列物件）
 export const router = createHashRouter([
@@ -37,6 +40,20 @@ export const router = createHashRouter([
       {
         path: "login",
         element: <Login />,
+      },
+    ],
+  },
+  {
+    path: "admin",
+    element: <AdminLayout />,
+    children: [
+      {
+        path: "product",
+        element: <AdminProducts />,
+      },
+      {
+        path: "order",
+        element: <AdminOrders />,
       },
     ],
   },

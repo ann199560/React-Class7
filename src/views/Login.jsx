@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { emailValidation } from "../utils/vaildation";
+import { useNavigate } from "react-router";
 const { VITE_API_BASE, VITE_API_PATH } = import.meta.env;
 
 function Login({ getProducts, setIsAuth }) {
@@ -9,6 +10,8 @@ function Login({ getProducts, setIsAuth }) {
   //   username: "@gmail.com",
   //   password: "",
   // });
+
+  const navigate = useNavigate(); // 路由切換轉址頁面
 
   const {
     register,
@@ -44,6 +47,7 @@ function Login({ getProducts, setIsAuth }) {
       // 修改實體建立時所指派的預設配置
       axios.defaults.headers.common["Authorization"] = token;
 
+      navigate("/admin/product"); // 登入成功後轉址到產品列表頁
       // getProducts();
       // setIsAuth(true);
     } catch (error) {
@@ -115,8 +119,8 @@ function Login({ getProducts, setIsAuth }) {
             // onChange={(e) => handleInputChange(e)}
           />
           <label htmlFor="password">Password</label>
-          {errors.username && (
-            <p className="text-danger">{errors.username.message}</p>
+          {errors.password && (
+            <p className="text-danger">{errors.password.message}</p>
           )}
         </div>
         <button

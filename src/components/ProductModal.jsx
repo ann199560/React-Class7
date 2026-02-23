@@ -1,5 +1,7 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { createAsyncMessage } from "../slice/messageSlice";
 
 const { VITE_API_BASE, VITE_API_PATH } = import.meta.env;
 
@@ -11,6 +13,8 @@ function ProductModal({
   getProducts,
 }) {
   const [tempData, setTempData] = useState(tempProduct);
+  // 用 dispatch 來發送 Redux action，這裡會用來顯示訊息通知（ Selector 是取資料 ）
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setTempData(tempProduct);
@@ -24,6 +28,7 @@ function ProductModal({
       [name]: type === "checkbox" ? checked : value,
     }));
   };
+
   const handleModalImageChange = (index, value) => {
     setTempData((pre) => {
       const newImages = [...pre.imagesUrl];
@@ -114,6 +119,7 @@ function ProductModal({
   const updateProduct = async (id) => {
     let url = `${VITE_API_BASE}/api/${VITE_API_PATH}/admin/product`;
     let method = "post";
+
     if (modalType === "edit") {
       url = `${VITE_API_BASE}/api/${VITE_API_PATH}/admin/product/${id}`;
       method = "put";
@@ -131,7 +137,8 @@ function ProductModal({
 
     try {
       const response = await axios[method](url, productData);
-
+      console.log(response.data);
+      dispatch(createAsyncMessage(response.data));
       getProducts();
       closeModal();
     } catch (error) {
